@@ -18,11 +18,102 @@
 </head>
 
 <body>
+  <div class="column column-md">
+    <!-- SECTION 1: Explanation + widget -->
+    <section>
+      <div class="text">
+        <h1>Magic Number Box (Variables)</h1>
+        <p>
+          In coding, a <strong>variable</strong> is like a box that holds a number.
+          You can <strong>store</strong> a number in the box and later
+          <strong>change</strong> it.
+        </p>
+        <p>
+          Try the widget below. Watch how the number and code change
+          when you click the buttons.
+        </p>
+      </div>
+
+      <!-- Our widget -->
+      <div class="widget variable-widget">
+        <div class="variable-widget__row">
+          <div class="variable-widget__box">
+            <p class="variable-widget__label">Number in the box:</p>
+            <div class="variable-widget__value-bubble">
+              <span class="variable-widget__value">0</span>
+            </div>
+          </div>
+
+          <div class="variable-widget__controls">
+            <label class="variable-widget__label" for="variable-input">
+              Type a number:
+            </label>
+            <input
+              id="variable-input"
+              class="variable-widget__input"
+              type="number"
+              value="5"
+            />
+
+            <div class="variable-widget__buttons">
+              <button class="button-semantic button-primary js-store">
+                Store in box
+              </button>
+              <button class="button-semantic button-secondary js-add-one">
+                Add 1
+              </button>
+              <button class="button-semantic button-tertiary js-reset">
+                Reset to 0
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="variable-widget__feedback">
+          <p class="variable-widget__message">
+            Type a number, then click “Store in box”.
+          </p>
+          <p class="variable-widget__code-label">Code:</p>
+          <pre class="variable-widget__code-block"><code class="variable-widget__code">let box = 0;</code></pre>
+        </div>
+      </div>
+
+      <!-- Continue button to show the next section -->
+      <button class="button-semantic button-primary button-continue">
+        <span class="button-text">Continue</span>
+        <svg class="button-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 8L14.59 6.59L9 12.17V0H7V12.17L1.42 6.58L0 8L8 16L16 8Z" fill="white" />
+        </svg>
+      </button>
+    </section>
+
+    <!-- SECTION 2: Wrap-up -->
+    <section>
+      <div class="text">
+        <h2>What did we learn?</h2>
+        <p>
+          The box is our <strong>variable</strong>. The number inside it is the
+          <strong>value</strong>.
+        </p>
+        <p>
+          First we create the variable:
+          <code>let box = 0;</code>
+        </p>
+        <p>
+          When you click the buttons, the value changes. The code becomes
+          <code>let box = newNumber;</code>. That’s how programs remember and
+          update information!
+        </p>
+      </div>
+    </section>
+  </div>
   <script type="module">
-    import { WidgetPage } from "../js/WidgetPage.js";
+    import { WidgetPage,  VariableWidget  } from "../js/WidgetPage.js";
 
     document.addEventListener("DOMContentLoaded", () => {
       const widgetPage = new WidgetPage("widget-page-template", document.body);
+       widgetPage.registerWidget(".variable-widget", VariableWidget);
     });
   </script>
 </body>

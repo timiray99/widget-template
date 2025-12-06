@@ -298,6 +298,94 @@ p {
     margin-bottom: 1rem;
 }
 
+.variable-widget {
+  border: 0.2em solid var(--neutral-100);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background-color: var(--neutral-10);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.variable-widget__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.variable-widget__box {
+  min-width: 9rem;
+}
+
+.variable-widget__label {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.variable-widget__value-bubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  border: 0.18em solid var(--neutral-200);
+  background-color: var(--neutral-0);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.variable-widget__value {
+  display: inline-block;
+}
+
+.variable-widget__controls {
+  flex: 1;
+  min-width: 11rem;
+}
+
+.variable-widget__input {
+  width: 4.5rem;
+  padding: 0.25rem 0.4rem;
+  border-radius: 0.5rem;
+  border: 0.1em solid var(--neutral-200);
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.variable-widget__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.variable-widget__feedback {
+  border-top: 0.1em solid var(--neutral-80);
+  padding-top: 0.5rem;
+}
+
+.variable-widget__message {
+  font-size: 0.9rem;
+  margin: 0 0 0.3rem;
+}
+
+.variable-widget__code-label {
+  font-size: 0.85rem;
+  margin: 0 0 0.2rem;
+}
+
+.variable-widget__code-block {
+  margin: 0;
+  padding: 0.4rem 0.5rem;
+  border-radius: 0.5rem;
+  background-color: var(--neutral-900);
+  color: var(--neutral-0);
+  font-size: 0.85rem;
+  overflow-x: auto;
+}
+
 .loader {
     width: 4px;
     height: 4px;

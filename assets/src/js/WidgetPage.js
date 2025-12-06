@@ -1,3 +1,5 @@
+import { Widget } from "./Widget.js";
+
 const CONFIG = { course: "ai-story-studio-6-8", project: "ai-story-studio-6-8" };
 
 /**
@@ -31,7 +33,7 @@ export class WidgetPage {
     this.incorrectSound = new Audio(this.getAssetPath("incorrect.wav", "shared"));
 
     // Find all continue buttons
-    this.continueButtons = this.container.querySelectorAll('.button-continue');
+    this.continueButtons = this.container.querySelectorAll(".button-continue");
 
     // Create a list to store widgets
     this.widgets = [];
@@ -44,9 +46,9 @@ export class WidgetPage {
    * Initialize event listeners
    */
   init() {
-    window.addEventListener('resize', this.handleResize.bind(this));
+    window.addEventListener("resize", this.handleResize.bind(this));
     this.continueButtons.forEach((continueButton) => {
-      continueButton.addEventListener('click', this.revealNextSection);
+      continueButton.addEventListener("click", this.revealNextSection);
     });
   }
 
@@ -57,15 +59,20 @@ export class WidgetPage {
    * @returns {string} The complete asset path
    */
   getAssetPath(filename, prefix) {
-    const developmentRoot = '../..';
+    const developmentRoot = "../..";
     const productionRoot = `/assets/courses/${CONFIG.course}/${CONFIG.project}/assets/widgets/`;
 
-    const environment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'DEVELOPMENT' : 'PRODUCTION';
-    const root = (environment === 'DEVELOPMENT') ? developmentRoot : productionRoot;
+    const environment =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+        ? "DEVELOPMENT"
+        : "PRODUCTION";
+    const root =
+      environment === "DEVELOPMENT" ? developmentRoot : productionRoot;
 
-    const cleanRoot = root.replace(/\/+$/, '');
-    const cleanPrefix = prefix.replace(/^\/+|\/+$/g, '');
-    const cleanFilename = filename.replace(/^\/+|\/+$/g, '');
+    const cleanRoot = root.replace(/\/+$/, "");
+    const cleanPrefix = prefix.replace(/^\/+|\/+$/g, "");
+    const cleanFilename = filename.replace(/^\/+|\/+$/g, "");
 
     return `${cleanRoot}/${cleanPrefix}/${cleanFilename}`;
   }
@@ -78,7 +85,7 @@ export class WidgetPage {
    */
   registerWidget(selector, widgetType) {
     const widgetContainers = this.container.querySelectorAll(selector);
-    widgetContainers.forEach(container => {
+    widgetContainers.forEach((container) => {
       try {
         const widget = new widgetType(container, this);
         this.widgets.push(widget);
@@ -94,19 +101,21 @@ export class WidgetPage {
    * @param {Event} event - The click event
    */
   revealNextSection(event) {
-    const button = event.target.closest('button');
-    const nextSection = button.closest('section').nextElementSibling;
+    const button = event.target.closest("button");
+    const nextSection = button.closest("section").nextElementSibling;
     if (!nextSection) {
       return;
     }
 
-    nextSection.style.display = 'flex';
+    nextSection.style.display = "flex";
     button.remove();
 
     // Smooth scroll to the next section if animations are enabled
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReducedMotion = window
+      .matchMedia("(prefers-reduced-motion: reduce)")
+      .matches;
     if (!prefersReducedMotion) {
-      nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      nextSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 
@@ -147,14 +156,15 @@ export class WidgetPage {
       ctx.fillStyle = particle.color;
       ctx.fillRect(particle.x, particle.y, particle.size, particle.size);
       particle.y += particle.speed;
-      if (particle.y > this.canvas.height)
+      if (particle.y > this.canvas.height) {
         this.confettiParticles.splice(i, 1);
+      }
     });
 
     if (this.confettiParticles.length > 0) {
       requestAnimationFrame(this.drawConfetti);
     }
-  }
+  };
 
   /**
    * Create a canvas element for confetti animation.
@@ -186,8 +196,8 @@ export class WidgetPage {
   }
 
   /**
- * Play the incorrect sound effect
- */
+   * Play the incorrect sound effect
+   */
   playIncorrectSound() {
     this.incorrectSound.play();
   }
@@ -196,8 +206,75 @@ export class WidgetPage {
    * Handle window resize events by notifying all widget elements.
    */
   handleResize() {
-    this.widgets.forEach(widget => {
+    this.widgets.forEach((widget) => {
       widget.onResize();
     });
+  }
+}
+
+/**
+ * VariableWidget
+ * A simple widget that teaches storing and changing a value in a variable.
+ */
+export class VariableWidget extends Widget {
+  /**
+   * @param {HTMLElement} rootElement - The widget container element
+   * @param {WidgetPage} page - The parent WidgetPage instance
+   */
+  constructor(rootElement, page) {
+    super(rootElement);
+    this.page = page;
+
+    // Our variable: it stores the number in the box
+    this.value = 0;
+
+    // Find elements inside the widget
+    this.valueEl = rootElement.querySelector(".variable-widget__value");
+    this.codeEl = rootElement.querySelector(".variable-widget__code");
+    this.messageEl = rootElement.querySelector(".variable-widget__message");
+    this.inputEl = rootElement.querySelector(".variable-widget__input");
+
+    this.storeButton = rootElement.querySelector(".js-store");
+    this.addOneButton = rootElement.querySelector(".js-add-one");
+    this.resetButton = rootElement.querySelector(".js-reset");
+
+    this.attachEventHandlers();
+    this.updateDisplay("Type a number, then click “Store in box”.");
+  }
+
+  attachEventHandlers() {
+    this.storeButton.addEventListener("click", () => {
+      const newValue = Number(this.inputEl.value);
+      if (Number.isNaN(newValue)) {
+        this.updateDisplay("Please type a number first.");
+        return;
+      }
+      this.value = newValue;
+      this.page?.playActionSound?.();
+      this.updateDisplay(`You stored ${this.value} in the box.`);
+    });
+
+    this.addOneButton.addEventListener("click", () => {
+      this.value = this.value + 1;
+      this.page?.playActionSound?.();
+      this.updateDisplay(`You added 1. Now the box has ${this.value}.`);
+    });
+
+    this.resetButton.addEventListener("click", () => {
+      this.value = 0;
+      this.page?.playActionSound?.();
+      this.updateDisplay("You reset the box back to 0.");
+    });
+  }
+
+  updateDisplay(message) {
+    this.valueEl.textContent = this.value;
+    this.codeEl.textContent = `let box = ${this.value};`;
+    this.messageEl.textContent = message;
+  }
+
+
+  onResize() {
+
   }
 }
